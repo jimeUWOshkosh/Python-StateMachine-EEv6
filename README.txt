@@ -18,8 +18,10 @@ Purchase his books
    Perl Hacks
 
 Articles/Video on the Subject by Mr. Poe and company
-   Modeling a Universe (Video) [Nov 2017]
+   Modeling a Universe (Video) [Aug 2017]
       https://www.youtube.com/watch?v=UmLwYLSmTSs&feature=emb_imp_woyt
+   Modeling a Universe (Video) [Nov 2017]
+      https://www.youtube.com/watch?v=UmLwYLSmTSs`
    On Writing Clean Code [April 2017]
       https://taustation.space/blog/on-writing-clean-code/
    Writing Declarative Perl [June 2017]

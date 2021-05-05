@@ -126,7 +126,7 @@ These behaviors alter the flow of steps:
 
 --------------------------------------------------
 
--> # In later versions of this presentation by Mr. Poe <-
+-> # In later versions of his presentation by Mr. Poe <-
 
 Mr. Poe has stated that when an error occurs during an Economic Exchange, the log will contain
 information about all of the steps in the Economic Exchange.
@@ -251,27 +251,27 @@ scope.
 
         Steps(
             Assets.Area(   self.is_in('clonevat')                   ),
-            Assets.Touch( 'Wallet'),
+            Assets.Touch( 'Assets.Wallet'),
             Assets.Wallet( self.pay( self.real_price('cloning') ) ),
             Assets.Clone(  self.gestate( self.station_area() )    ),
         ) #STEPS
 
    The Wallet Asset in this case will remove the file and return a failure code of -1
 
+1) Took the concept of Asset failure techique further. Change the source filter to allow the
+   method with the state machine to pass what step should fail.
 
+           elif option == 5:
+              if (option == step2fail): tmp = Assets.Touch('Assets.Wallet')
+              return   Assets.Wallet(   character().show_balance()                     )
 
+2) Logging works with chaining methods if you do NOT like Mr. Poe's SVO style
 
-
-
-
-
-
-
-
-
-
-
-
+        Steps(
+            Assets.Location( self.is_in_area('clonevat') ),
+            Assets.Wallet(   self.price('cloning').pay(arg1)  ),
+            Assets.Clone(   self.station_area().gestate(arg1) ),
+        ) #STEPS
 
 --------------------------------------------------
 
