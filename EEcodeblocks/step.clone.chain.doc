@@ -1,0 +1,8 @@
+
+
+        Steps(
+            Assets.Location( self.is_in_area('clonevat') ),
+            Assets.Wallet(   self.price('cloning').pay(arg1)  ),
+            Assets.Clone(   self.station_area().gestate(arg1) ),
+        ) #STEPS
+

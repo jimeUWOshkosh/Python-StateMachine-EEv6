@@ -1,0 +1,60 @@
+http://blogs.perl.org/users/ovid/2017/06/writing-declarative-perl.html
+
+sub purchase_clone ($self) {
+    my $exchange = $self->new_exchange(
+        slug            => 'purchase-clone',
+        success_message => 'You have purchased a new clone',
+        failure_message => 'You could not purchase a new clone',
+        Steps(
+            Area(   $self => is_in   => 'clonevat' ),
+            Wallet( $self => pay     => $self->real_price('cloning') ),
+            Clone(  $self => gestate => $self->station_area ),
+        ),
+    );
+    return $exchange->attempt;
+}
+
+
+http://blogs.perl.org/users/ovid/2017/06/writing-declarative-perl.html
+
+my $succeeded = $self->new_exchange(
+    slug            => 'arm-wrestle',
+    success_message => 'You won the arm wrestling match!',
+    failure_message => 'You lost the arm wresting match!',
+    Steps(
+      Area(     $character => is_in               => 'inn'       ),
+      Wallet(   $character => has_minimum_credits => $bet_amount ),
+      Location( $character => arm_wrestle         => $npc        ),
+      Wallet(   $character => add                 => $bet_amount ),
+      FAILURE( Wallet( $character => remove => $bet_amount ) ),
+      ALWAYS( Wallet(  $character => show_balance ) ),
+    )
+)->attempt;
+
+
+https://taustation.space/blog/extending-economic-exchange-conditions/
+
+sub scavenge ($self) {
+  my $inventory    = $self->inventory;
+  my $station_area = $self->station_area;
+
+  my $key = 'found-item';
+
+  my $focus_cost = config( qw/ areas ruins scavenge_cost_focus /);
+  my $stamina_cost = config( qw/ areas ruins scavenge_cost_stamina /);
+
+  my $exchange = $self->new_exchange(
+    slug => 'scavenge',
+    Steps(
+      ASSERT( Location(  $self => can_scavenge     => $station_area )),
+      ASSERT( Stats(     $self => minimum_required => { curr_stamina => $stamina_cost, focus        => $focus_cost, })),
+              Location(  $self => scavenge         => { station_area => $station_area, key          => $key, }),
+      ALWAYS( Stats(     $self => remove           => { curr_stamina => $stamina_cost })),
+              Stats(     $self => remove           => { focus => $focus_cost }),
+              Inventory( $inventory => add_item    => { item => $key, new_key => 'found' }),
+              Event(     $self => store            => { event_type => 'find', stashed    => { item => $key } }),
+    ),
+  );
+
+  return $exchange->attempt;
+}

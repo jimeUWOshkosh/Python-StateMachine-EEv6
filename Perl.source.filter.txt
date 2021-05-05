@@ -1,0 +1,19 @@
+     Steps(
+                  Location( $self      => is_in_area  => 'clonevat'              ),
+                  Wallet(   $self      => pay         => $self->price('cloning') ),
+                  Clone(    $self      => gestate     => $self->station_area     ),
+         FAILURE( Wallet(   $character => remove      => $bet_amount ) ),
+         ALWAYS(  Wallet( $character => 'show_balance') ),
+      )
+
+--- after source filter ---
+
+        Steps->new(
+            [ undef,     sub { Asset::Location->new( $self => is_in_area => 'clonevat' )       } ],
+            [ undef,     sub { Asset::Wallet->new  ( $self => pay => $self->price('cloning') ) } ],
+            [ undef,     sub { Asset::Clone->new   ( $self => gestate => $self->station_area ) } ],
+            [ 'FAILURE', sub { Asset::Wallet->new  ( $character => remove => $bet_amount )     } ],
+            [ 'ALWAYS',  sub { Asset::Wallet->new  ( $character => 'show_balance' )            } ],
+        ),
+    );
+

@@ -1,0 +1,306 @@
+%title: Economic Exchange
+%author: James Edwards
+%date: 2018-03-08
+
+-> Ovid/Economic Exchange  <-
+=========
+
+At The Perl Conference 2017 in Washington DC, Curtis Poe gave a talk titled 
+[Modeling a Universe in Perl:VIDEO](https://www.youtube.com/watch?v=UmLwYLSmTSs)
+
+It was [On writing clean code](https://taustation.space/blog/on-writing-clean-code/) and how modularizing large subroutines
+into a state machine. He is calling this multi step transaction an *Economic Exchange.
+
+   Iterate over each of the steps in succession, and if any of them fail,
+   all changes are discarded and the failed transaction is logged. If all
+   of the steps succeed, every object which was updated is then stored in
+   the database and we log a successful transaction.
+
+         Purchase_Stuff_From_Game_Crafter(
+           'arg1',
+           'arg2',
+           Steps(
+                  two(  one('stuff')),
+                  four( three('more stuff')),
+           ),
+         );
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # State Machine <-
+
+          Steps(
+                      two( one('stuff')),
+                      four(three('more stuff')),
+          )
+
+If state machine was NOT used, the execution would be
+  one
+  two
+  three
+  four
+  Steps
+
+We want
+   Steps
+         one
+      two
+         three
+      four
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # Another Pet Peeve of Mr. Poe <-
+  
+Another thing he wanted is the order of subroutine arguments in a *step* be Subject, Verb then Object
+to lessen amount of pain reading the code
+
+            Steps(
+               topic_areaX( subject => verb   => object ),
+               topic_areaX( subject => verb   => object ),
+               topic_areaX( subject => verb   => object ) ),
+               topic_areaX( subject => verb   => object ) ),
+           )
+
+The 'topic_area' is a class and the SVO arguments help to build the instance (constructor).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # Another Feature of Mr. Poe's Economic Exchange : BEHAVIORS <-
+
+[Extending Economic Exchange Conditions](https://blog.taustation.space/blog/extending-economic-exchange-conditions/)
+
+These behaviors alter the flow of steps:
+   *ASSERT*  – If this step fails, do not call any other steps for any reason.
+   *ALWAYS*  – Always run this step (unless an ASSERT was previously failed).
+   *FAILURE* – Run this step if any earlier step failed (unless an ASSERT was
+             previously failed).
+
+*code snippet*  
+
+          my $exchange = $self->new_exchange(
+              slug            => 'arm-wrestle',
+              success_message => 'You won the arm wrestling match!',
+              failure_message => 'You lost the arm wresting match!',
+              Steps(
+                         Area(     $character => is_in               => 'inn'       ),
+                         Wallet(   $character => has_minimum_credits => $bet_amount ),
+                         Location( $character => arm_wrestle         => $npc        ),
+                         Wallet(   $character => add                 => $bet_amount ),
+                FAILURE( Wallet(   $character => remove => $bet_amount ) ),
+                ALWAYS(  Wallet(   $character => show_balance ) ),
+              )
+          );
+          return $exchange->attempt;
+
+*Note*: The *ASSERT* Behavior will not be done in Jim's 1st version
+
+--------------------------------------------------
+
+-> # In later versions of this presentation by Mr. Poe <-
+
+Mr. Poe has stated that when an error occurs during an Economic Exchange, the log will contain
+information about all of the steps in the Economic Exchange.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # Scope of this project <-
+
+I believe Mr. Poe used a precompiler source code filter based on the CPAN module Filter::Util::Call
+along with Perl's *anonymous* subroutines to achieve his goal.
+
+What I wish to do here, is to migrate this to Python and use a precomplier to take the high level code
+down to actual code via a Make file. 
+   ex: Writing Embedded SQL in C. 
+         Code written with SQL in a <dot>sc file.
+         The Make file would run the source filter for the desired RDBMS (Ingres, Oracle, Informix, Sybase)
+           and create the <dot>c file, then compile and link the program
+
+Proposal #1
+  Write a python program/module in a <dot>spy file that may contain multiple Economic Exchanges.
+Create a source filter for the Make file to use to create a <dot>py file.
+
+ Thus, for a code review, the programmer would propose the contents of the <dot>spy file rather than get
+into the weeds of EconomicExchange/StateMachine.
+
+        Steps(
+                   Assets.Area(     character.is_in('inn')       ),
+                   Assets.Wallet(   character.has_minimum_credits(bet_amount ) ),
+                   Assets.Location( character.arm_wrestle(npc) ),
+                   Assets.Wallet(   character.add(bet_amount) ),
+          FAILURE( Assets.Wallet(   character.remove(bet_amount) )),
+          ALWAYS(  Assets.Wallet(   character.show_balance() ) ),
+        ) #STEPS
+
+
+--------------------------------------------------
+
+-> # Scope of this project CONTINUED <-
+
+Proposal #2
+   The programmer would create a doc that declares the Economic Exchange. Then run script using 
+the doc as input to generate the State Machine code to standard output. The programmer would 
+then paste the code into their program.
+
+        Steps(
+                   Assets.Area(     character.is_in('inn')       ),
+                   Assets.Wallet(   character.has_minimum_credits(bet_amount ) ),
+                   Assets.Location( character.arm_wrestle(npc) ),
+                   Assets.Wallet(   character.add(bet_amount) ),
+          FAILURE( Assets.Wallet(   character.remove(bet_amount) )),
+          ALWAYS(  Assets.Wallet(   character.show_balance() ) ),
+        ) #STEPS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # Post Mordem <-
+
+Proposal #1
+
+After a few sessions with a 'virtual programmer', they were usually not declaring 
+the one or more of arguments used in the 'steps' of a *Economic Exhange*.
+
+Proposal #2
+
+Had to find some vi users/programmers to try out
+:r  !  perl  my-py-filter.pl  step.doc
+
+They seem to understand that it was a code generator rather something larger in 
+scope.
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # EXTRA <-
+
+0) Created a Asset failure technique by creating a file in the 'debug' sub-directory with the name of the
+   asset you wish to fail.
+
+        Steps(
+            Assets.Area(   self.is_in('clonevat')                   ),
+            Assets.Touch( 'Wallet'),
+            Assets.Wallet( self.pay( self.real_price('cloning') ) ),
+            Assets.Clone(  self.gestate( self.station_area() )    ),
+        ) #STEPS
+
+   The Wallet Asset in this case will remove the file and return a failure code of -1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # TODO <-
+
+0) Program *ASSERT* behavior
+1) Create command line option for State Machine number
+2) Create command line option for whether 3 or 4 spaces are used for an indent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

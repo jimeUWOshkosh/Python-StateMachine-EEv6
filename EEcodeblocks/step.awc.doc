@@ -1,0 +1,10 @@
+
+
+        Steps(
+                   Assets.Area(     character().is_in('inn') ),
+                   Assets.Wallet(   character().has_minimum_credits(bet_amount) ),
+                   Assets.Location( character().arm_wrestle(npc) ),
+                   Assets.Wallet(   character().add(bet_amount) ),
+          FAILURE( Assets.Wallet(   character().remove(bet_amount)                 ) ),
+          ALWAYS(  Assets.Wallet(   character().show_balance()                     ) ),
+        ) #STEPS
