@@ -105,7 +105,7 @@ These behaviors alter the flow of steps:
    *FAILURE* – Run this step if any earlier step failed (unless an ASSERT was
              previously failed).
 
-*code snippet*  
+*code snippet*  from Tau Station's blog
 
           my $exchange = $self->new_exchange(
               slug            => 'arm-wrestle',
@@ -122,7 +122,7 @@ These behaviors alter the flow of steps:
           );
           return $exchange->attempt;
 
-*Note*: The *ASSERT* Behavior will not be done in Jim's 1st version
+*Note*: The *ASSERT* Behavior will NOT be done in Jim's current version
 
 --------------------------------------------------
 
