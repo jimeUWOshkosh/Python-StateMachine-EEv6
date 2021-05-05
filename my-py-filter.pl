@@ -113,13 +113,18 @@ CODE2B
 		my $rest = $+{rest};
 		my $post_trans = $+{post_trans};
 		$rest =~  s/^\s+//g;   # trim left
+		my @list = split(/\(/, $rest);
+	        say "          if (option == step2fail): tmp = Assets.Touch('$list[0]')";
 	        say "          return   ",$rest;
 		push(@behaviors, "\'${post_trans}\'");
 	    } else {
 	    # A STEP WITHOUT A BEHAVIOR
 		$_ =~  s/^\s+//;    # trim left
 		$_ =~  s/,\s*\z//;  # trim comma
-	        say "          return   ",$_;
+		my $str = $_;
+		my @list = split(/\(/, $str);
+	        say "          if (option == step2fail): tmp = Assets.Touch('$list[0]')";
+	        say "          return   ",$str;
 		push(@behaviors, "\'NONE\'");
 	    }
             $current_step++;
