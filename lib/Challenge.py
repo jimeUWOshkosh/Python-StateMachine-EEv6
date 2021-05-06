@@ -7,8 +7,8 @@ class Challenge(object):
       self.str = ''
 
    def arm_wrestling_challenge(self,character,step2fail):
-      bet_amount = 0
-      npc = 0
+      bet_amount = 97
+      npc = 33
 
       def steps0(option):
         if option == 0:

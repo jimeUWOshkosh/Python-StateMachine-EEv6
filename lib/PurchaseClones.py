@@ -9,10 +9,12 @@ class PurchaseClones(object):
 
    def is_in(self,location):
       self.str = 'is_in_area(' + location + self.str + ')'
+      # Perform normal tasks of 'is_in'
       return self
 
    def is_in_area(self,location):
       self.str = 'is_in_area(' + location + self.str + ')'
+      # Perform normal tasks of 'is_in_area'
       return self
 
    def pay(self,arg1):
@@ -20,6 +22,7 @@ class PurchaseClones(object):
          self.str = self.str + 'pay()' 
       else:
          self.str = 'pay()' + self.str
+      # Perform normal tasks of 'pay'
       return self
 
    def price(self,location):
@@ -27,18 +30,22 @@ class PurchaseClones(object):
          self.str = self.str + 'price()' 
       else:
          self.str = 'price()' + self.str
+      # Perform normal tasks of 'price'
       return self
 
    def gestate(self,arg1):
       self.str = 'gestate()' + self.str
+      # Perform normal tasks of 'gestate'
       return self
 
    def real_price(self,location):
       self.str = 'real_price()'
+      # Perform normal tasks of 'real_price'
       return self
 
    def station_area(self):
       self.str = 'station_area()' + self.str
+      # Perform normal tasks of 'station_area'
       return self
 
    def purchase_clone(self,step2fail):
