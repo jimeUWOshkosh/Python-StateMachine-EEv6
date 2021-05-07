@@ -9,7 +9,7 @@ class Character(object):
       return self
 
    def arm_wrestle(self,npc):
-      self.str = "arm_wreslte( " + str(npc) + ")"
+      self.str = "arm_wrestle( " + str(npc) + ")"
       return self
 
    def has_minimum_credits(self,amt):

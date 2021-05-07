@@ -17,11 +17,12 @@ class PurchaseClones(object):
       # Perform normal tasks of 'is_in_area'
       return self
 
-   def pay(self,arg1):
+   def pay(self,*arg1):
       if (self.chaining):
-         self.str = self.str + 'pay()' 
+         self.str = self.str + 'pay()'
       else:
-         self.str = 'pay()' + self.str
+         self.str = 'pay().' + self.str
+#         self.str = 'pay(' + str(arg1) + ')' + self.str
       # Perform normal tasks of 'pay'
       return self
 
@@ -33,18 +34,27 @@ class PurchaseClones(object):
       # Perform normal tasks of 'price'
       return self
 
-   def gestate(self,arg1):
-      self.str = 'gestate()' + self.str
+   def gestate(self,*arg1):
+      if (self.chaining):
+         self.str = self.str + 'gestate()' 
+      else:
+         self.str = 'gestate().' + self.str
       # Perform normal tasks of 'gestate'
       return self
 
    def real_price(self,location):
-      self.str = 'real_price()'
+      if (self.chaining):
+         self.str = self.str + 'real_price(' + location + ').' 
+      else:
+         self.str = 'real_price(' + location + ')'
       # Perform normal tasks of 'real_price'
       return self
 
    def station_area(self):
-      self.str = 'station_area()' + self.str
+      if (self.chaining):
+         self.str = self.str + 'station_area().' 
+      else:
+         self.str = 'station_area()' + self.str
       # Perform normal tasks of 'station_area'
       return self
 
@@ -52,14 +62,14 @@ class PurchaseClones(object):
 
       def steps0(option):
         if option == 0:
-          if (option == step2fail): tmp = Assets.Touch('Assets.Area')
-          return   Assets.Area(   self.is_in('clonevat')                   )
+          if (option == step2fail): tmp = Assets.Touch('Assets.Location')
+          return   Assets.Location( self.is_in('clonevat')                   )
         elif option == 1:
           if (option == step2fail): tmp = Assets.Touch('Assets.Wallet')
-          return   Assets.Wallet( self.pay( self.real_price('cloning') ) )
+          return   Assets.Wallet(   self.pay( self.real_price('cloning') )   )
         elif option == 2:
           if (option == step2fail): tmp = Assets.Touch('Assets.Clone')
-          return   Assets.Clone(  self.gestate( self.station_area() )    )
+          return   Assets.Clone(    self.gestate( self.station_area() )      )
         else:
            print("Incorrect option")
 
@@ -116,7 +126,7 @@ class PurchaseClones(object):
    def purchase_clone2(self,step2fail):
       self.chaining = True
       Assets.Execute = True
-      arg1=0
+#      arg1=0
 
       def steps0(option):
         if option == 0:
@@ -124,10 +134,10 @@ class PurchaseClones(object):
           return   Assets.Location( self.is_in_area('clonevat') )
         elif option == 1:
           if (option == step2fail): tmp = Assets.Touch('Assets.Wallet')
-          return   Assets.Wallet(   self.price('cloning').pay(arg1)  )
+          return   Assets.Wallet(   self.real_price('cloning').pay()  )
         elif option == 2:
           if (option == step2fail): tmp = Assets.Touch('Assets.Clone')
-          return   Assets.Clone(   self.station_area().gestate(arg1) )
+          return   Assets.Clone(   self.station_area().gestate() )
         else:
            print("Incorrect option")
 
@@ -180,3 +190,4 @@ class PurchaseClones(object):
 
       print("------------------")
       return returned
+

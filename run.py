@@ -8,7 +8,7 @@ import lib.Challenge      as Challenge
 
 # Purchase a clone using Ovid's SVO
 clone = PurchaseClones.PurchaseClones
-objs_returned = clone().purchase_clone(-1)
+objs_returned = clone().purchase_clone(5)
 
 # using Python's chaining methods
 clone2 = PurchaseClones.PurchaseClones

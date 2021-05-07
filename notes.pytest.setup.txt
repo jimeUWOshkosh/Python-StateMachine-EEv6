@@ -1,0 +1,7 @@
+# pytest setup
+
+> pip3 install pytest
+
+> vi pytest.ini
+	[pytest]
+	testpaths = t

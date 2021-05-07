@@ -8,7 +8,7 @@
 At The Perl Conference 2017 in Washington DC, Curtis Poe gave a talk titled 
 [Modeling a Universe in Perl:VIDEO](https://www.youtube.com/watch?v=UmLwYLSmTSs)
 
-It was [On writing clean code](https://taustation.space/blog/on-writing-clean-code/) and how modularizing large subroutines
+It was [On writing clean code](https://taustation.space/blog/on-writing-clean-code/) and how to modularizing large subroutines
 into a state machine. He is calling this multi step transaction an *Economic Exchange.
 
    Iterate over each of the steps in succession, and if any of them fail,
@@ -40,12 +40,15 @@ into a state machine. He is calling this multi step transaction an *Economic Exc
                       four(three('more stuff')),
           )
 
-If state machine was NOT used, the execution would be
+
+If State Machine was NOT used, the execution would be
   one
   two
   three
   four
   Steps
+
+
 
 We want
    Steps
@@ -59,14 +62,11 @@ We want
 
 
 
-
-
-
 --------------------------------------------------
 
 -> # Another Pet Peeve of Mr. Poe <-
   
-Another thing he wanted is the order of subroutine arguments in a *step* be Subject, Verb then Object
+Another thing he wanted is the order of the arguments in a *step* be Subject, Verb then Object
 to lessen amount of pain reading the code
 
             Steps(
@@ -288,6 +288,68 @@ scope.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+
+-> # Design Decision <-
+
+Database Transactions
+   0) If a Econmic Exchange has a failure
+
+
+
+         A) Step(
+                          step0(),
+                          step1(),
+                  FAILURE(step2()),
+                  ALWAYS( step3()),
+            ) #STEPS
+
+         Q: Are FAILURE and ALWAYS single transactions?
+
+
+
+         B) Step(
+                          step0(),
+                  ALWAYS( step1()),
+                          step2(),
+                          step3(),
+            ) #STEPS
+
+         Q: Do you have to go back are redo the ALWAYS transcation portion?
+
+
+
+--------------------------------------------------
+
+-> # Design Decision: Continued <-
+
+Q: If you do program ASSERTions, are they single transactions outside of the main transaction?
+
+         Step(
+               ASSERT( step0()),
+               ASSERT( step1()),
+                       step2(),
+               ALWAYS( step3()),
+                       step4(),
+                       step5(),
+                      
+         ) #STEPS
 
 
 
